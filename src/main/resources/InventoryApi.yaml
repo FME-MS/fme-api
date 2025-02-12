@@ -1,0 +1,361 @@
+openapi: "3.1.0"
+info:
+  title: "fme_service API"
+  description: "fme_service API"
+  version: "1.0.0"
+servers:
+  - url: "https://fme_service"
+paths:
+  /inventory/items:
+    post:
+      summary: "POST inventory/items"
+      operationId: "createItem"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateItemRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CreateItemResponse"
+  /inventory/items/{uuid}:
+    get:
+      summary: "GET inventory/items/{uuid}"
+      operationId: "getItemById"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/InventoryItem"
+    put:
+      summary: "PUT inventory/items/{uuid}"
+      operationId: "updateItemInfo"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateItemInfoRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/InventoryItem"
+    delete:
+      summary: "DELETE inventory/items/{uuid}"
+      operationId: "deleteItem"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /inventory/items/{uuid}/condition:
+    put:
+      summary: "PUT inventory/items/{uuid}/condition"
+      operationId: "updateItemCondition"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateItemConditionRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/InventoryItem"
+  /inventory/items/{uuid}/status:
+    put:
+      summary: "PUT inventory/items/{uuid}/status"
+      operationId: "updateItemStatus"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateItemStatusRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/InventoryItem"
+  /inventory/spaces:
+    get:
+      summary: "GET inventory/spaces"
+      operationId: "getInventorySpaces"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GetInventorySpacesResponse"
+    post:
+      summary: "POST inventory/spaces"
+      operationId: "createInventorySpace"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInventorySpaceRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/InventorySpace"
+  /inventory/spaces/{spaceId}:
+    delete:
+      summary: "DELETE inventory/spaces/{spaceId}"
+      operationId: "deleteInventorySpace"
+      parameters:
+        - name: "spaceId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Void"
+  /inventory/{inventorySpaceName}/items:
+    get:
+      summary: "GET inventory/{inventorySpaceName}/items"
+      operationId: "getItemPage"
+      parameters:
+        - name: "inventorySpaceName"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "page"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "size"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "filterByNamePrefix"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PagedItemResponse"
+components:
+  schemas:
+    ItemCondition:
+      type: "object"
+      properties:
+        condition:
+          type: "string"
+          enum:
+            - "NOT_DAMAGED"
+            - "DAMAGED_WEARABLE"
+            - "DAMAGED_NOT_WEARABLE"
+        comment:
+          type: "string"
+    InventoryStatusEntity:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+        status:
+          type: "string"
+          enum:
+            - "AVAILABLE"
+            - "IN_USE"
+            - "RESERVED"
+            - "LOST"
+        managedByUserId:
+          type: "string"
+          format: "uuid"
+        changedByUserId:
+          type: "string"
+          format: "uuid"
+    InventoryItem:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        itemCondition:
+          $ref: "#/components/schemas/ItemCondition"
+        currentStatus:
+          $ref: "#/components/schemas/InventoryStatusEntity"
+        statusHistory:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/InventoryStatusEntity"
+        version:
+          type: "integer"
+          format: "int64"
+    CreateItemRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+        spaceName:
+          type: "string"
+    CreateItemResponse:
+      type: "object"
+      properties:
+        item:
+          $ref: "#/components/schemas/InventoryItem"
+    UpdateItemInfoRequest:
+      type: "object"
+      properties:
+        item:
+          $ref: "#/components/schemas/InventoryItem"
+    UpdateItemConditionRequest:
+      type: "object"
+      properties:
+        itemUuid:
+          type: "string"
+          format: "uuid"
+        condition:
+          type: "string"
+          enum:
+            - "NOT_DAMAGED"
+            - "DAMAGED_WEARABLE"
+            - "DAMAGED_NOT_WEARABLE"
+        comment:
+          type: "string"
+    UpdateItemStatusRequest:
+      type: "object"
+      properties:
+        newStatus:
+          type: "string"
+          enum:
+            - "AVAILABLE"
+            - "IN_USE"
+            - "RESERVED"
+            - "LOST"
+        managedByUserId:
+          type: "string"
+          format: "uuid"
+    InventorySpace:
+      type: "object"
+      properties:
+        spaceId:
+          type: "string"
+        spaceName:
+          type: "string"
+        totalItems:
+          type: "integer"
+          format: "int32"
+    GetInventorySpacesResponse:
+      type: "object"
+      properties:
+        spaces:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/InventorySpace"
+    CreateInventorySpaceRequest:
+      type: "object"
+      properties:
+        inventorySpaceName:
+          type: "string"
+    Void:
+      type: "object"
+      properties: { }
+    PageMetadata:
+      type: "object"
+      properties:
+        page:
+          type: "integer"
+          format: "int32"
+        pageSize:
+          type: "integer"
+          format: "int32"
+        totalElements:
+          type: "integer"
+          format: "int64"
+        totalPages:
+          type: "integer"
+          format: "int32"
+    PagedItemResponse:
+      type: "object"
+      properties:
+        items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/InventoryItem"
+        pageMetadata:
+          $ref: "#/components/schemas/PageMetadata"
