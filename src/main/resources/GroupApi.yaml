@@ -1,0 +1,94 @@
+openapi: 3.1.0
+info:
+  title: Group Api
+  description: Group Api
+  version: 1.0.0-SNAPSHOT
+servers:
+  - url: 'http://localhost:8080/api'
+paths:
+  /group/{groupId}:
+    parameters:
+      - name: groupId
+        required: true
+        in: path
+        schema:
+          type: uuid
+          format: uuid
+    get:
+      tags:
+        - Group
+      operationId: "getGroup"
+      responses:
+        200:
+          description: "Get the information to a group by groupId"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupResponse"
+        404:
+          description: "No group with groupId found"
+        default:
+          description: "Not authorized"
+    put:
+      operationId: "updateGroup"
+      tags:
+        - Group
+      description: "Update a group"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupResponse"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupResponse"
+        default:
+          description: "Unexpected error"
+  /group:
+    post:
+      operationId: "createGroup"
+      tags:
+        - Group
+      description: "Create a new group"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGroupRequest"
+      responses:
+        200:
+          description: "Group created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupResponse"
+        default:
+          description: "Unexpected error"
+
+
+components:
+  schemas:
+    CreateGroupRequest:
+      type: object
+      description: "Simple Group object"
+      properties:
+        name:
+          type: string
+
+    GroupResponse:
+      type: object
+      description: "Simple Group object"
+      properties:
+        name:
+          type: string
+        members:
+          type: array
+          items:
+            type: object
+            ref: "./UserApi.yaml#/components/schemas/BasicUserInfo"

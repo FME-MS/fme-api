@@ -8,6 +8,8 @@ servers:
 paths:
   /inventory/items:
     post:
+      tags:
+        - Inventory
       summary: "POST inventory/items"
       operationId: "createItem"
       requestBody:
@@ -25,6 +27,8 @@ paths:
                 $ref: "#/components/schemas/CreateItemResponse"
   /inventory/items/{uuid}:
     get:
+      tags:
+        - Inventory
       summary: "GET inventory/items/{uuid}"
       operationId: "getItemById"
       parameters:
@@ -42,6 +46,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/InventoryItem"
     put:
+      tags:
+        - Inventory
       summary: "PUT inventory/items/{uuid}"
       operationId: "updateItemInfo"
       parameters:
@@ -65,6 +71,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/InventoryItem"
     delete:
+      tags:
+        - Inventory
       summary: "DELETE inventory/items/{uuid}"
       operationId: "deleteItem"
       parameters:
@@ -83,6 +91,8 @@ paths:
                 type: "string"
   /inventory/items/{uuid}/condition:
     put:
+      tags:
+        - Inventory
       summary: "PUT inventory/items/{uuid}/condition"
       operationId: "updateItemCondition"
       parameters:
@@ -107,6 +117,8 @@ paths:
                 $ref: "#/components/schemas/InventoryItem"
   /inventory/items/{uuid}/status:
     put:
+      tags:
+        - Inventory
       summary: "PUT inventory/items/{uuid}/status"
       operationId: "updateItemStatus"
       parameters:
@@ -131,6 +143,8 @@ paths:
                 $ref: "#/components/schemas/InventoryItem"
   /inventory/spaces:
     get:
+      tags:
+        - Inventory
       summary: "GET inventory/spaces"
       operationId: "getInventorySpaces"
       responses:
@@ -141,6 +155,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetInventorySpacesResponse"
     post:
+      tags:
+        - Inventory
       summary: "POST inventory/spaces"
       operationId: "createInventorySpace"
       requestBody:
@@ -158,6 +174,8 @@ paths:
                 $ref: "#/components/schemas/InventorySpace"
   /inventory/spaces/{spaceId}:
     delete:
+      tags:
+        - Inventory
       summary: "DELETE inventory/spaces/{spaceId}"
       operationId: "deleteInventorySpace"
       parameters:
@@ -176,6 +194,8 @@ paths:
                 $ref: "#/components/schemas/Void"
   /inventory/{inventorySpaceName}/items:
     get:
+      tags:
+        - Inventory
       summary: "GET inventory/{inventorySpaceName}/items"
       operationId: "getItemPage"
       parameters:

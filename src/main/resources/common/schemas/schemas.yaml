@@ -1,0 +1,28 @@
+components:
+  schemas:
+    PageRequest:
+      type: object
+      description: "Shared Page Request"
+      properties:
+        page:
+          type: integer
+        size:
+          type: integer
+        sort:
+          type: string
+    PagedMetadataResponse:
+      type: object
+      description: "Simple Guestbook object"
+      properties:
+        page:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
