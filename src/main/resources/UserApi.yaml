@@ -1,0 +1,277 @@
+openapi: 3.1.0
+info:
+  title: UserApi
+  description: UserApi
+  version: 1.0.0-SNAPSHOT
+servers:
+  - url: 'http://localhost:8080/api'
+paths:
+
+  /users/me:
+    get:
+      operationId: "getCurrentUser"
+      tags:
+        - User
+      summary: "Get info about the current authenticated user"
+      responses:
+        200:
+          description: "Current user's profile"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        401:
+          description: "Not authenticated"
+
+  /users:
+    get:
+      parameters:
+        - in: query
+          name: pageNumber
+          schema:
+            type: integer
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+      operationId: "getAllUsers"
+      tags:
+        - User
+      summary: "Get paged basic info of all users."
+      responses:
+        200:
+          description: "Paged list of Users"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedUserResponse'
+
+    post:
+      operationId: "createUser"
+      tags:
+        - User
+      summary: "Register a new user"
+      description: "Optional endpoint if user registration is open"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+      responses:
+        201:
+          description: "User created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        400:
+          description: "Validation error"
+        default:
+          description: "Unexpected error"
+
+  /users/{userid}:
+    parameters:
+      - name: userid
+        required: true
+        in: path
+        schema:
+          type: uuid
+          format: uuid
+    get:
+      operationId: "getUserById"
+      tags:
+        - User
+      summary: "Get basic public info of a user (e.g., for group listing)"
+      responses:
+        200:
+          description: "Basic user info"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPublic"
+        404:
+          description: "No user with userId found"
+        default:
+          description: "Unexpected error"
+
+    put:
+      operationId: "updateUser"
+      tags:
+        - User
+      description: "Update a user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserRequest"
+      responses:
+        200:
+          description: "Successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        404:
+          description: "No user with userId found"
+        default:
+          description: "Unexpected error"
+
+    delete:
+      operationId: "deleteUser"
+      tags:
+        - User
+      description: "Delete a user"
+      responses:
+        204:
+          description: "User successfully deleted"
+        401:
+          description: "No user with userId found"
+        default:
+          description: "Unexpected error"
+
+  /users/search:
+    get:
+      operationId: "searchUsers"
+      tags:
+        - User
+      summary: "Search for users by name or username"
+      parameters:
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+          description: "Text to search in username, first name, or last name"
+        - in: query
+          name: pageNumber
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            default: 20
+      responses:
+        200:
+          description: "Paged list of matching users"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedUserResponse"
+        400:
+          description: "Invalid query"
+
+
+components:
+  schemas:
+    CreateUserRequest:
+      type: object
+      required: [ username, password, email, firstName, lastName ]
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+          minLength: 8
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+        birthdate:
+          type: date
+        address:
+          type: object
+          schema:
+            $ref: '#/components/schemas/Address'
+
+    UserProfile:
+      type: object
+      properties:
+        userId:
+          type: uuid
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        birthdate:
+          type: date
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/GlobalRole'
+        address:
+          $ref: '#/components/schemas/Address'
+        groups:
+          type: array
+          items:
+            $ref: './GroupApi.yaml/#/components/schemas/GroupWithRole'
+
+    PagedUserResponse:
+      type: object
+      description: "Paged User response"
+      properties:
+        metadata:
+          $ref: "./common/schemas/schemas.yaml#/components/schemas/PagedMetadataResponse"
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserPublic"
+
+    UserPublic:
+      type: object
+      properties:
+        userId:
+          type: uuid
+          format: uuid
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+
+    Address:
+      type: object
+      properties:
+        zipCode:
+          type: string
+          maxLength: 6
+        city:
+          type: string
+        street:
+          type: string
+
+    GlobalRole:
+      type: string
+      enum: [ USER, ADMIN ]
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        birthdate:
+          type: date
+        address:
+          $ref: '#/components/schemas/Address'

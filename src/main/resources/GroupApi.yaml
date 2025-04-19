@@ -6,7 +6,42 @@ info:
 servers:
   - url: 'http://localhost:8080/api'
 paths:
-  /group/{groupId}:
+  /groups:
+    post:
+      operationId: "createGroup"
+      tags:
+        - Group
+      description: "Create a new group"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGroupRequest"
+      responses:
+        201:
+          description: "Group created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupResponse"
+        default:
+          description: "Unexpected error"
+
+  /groups/mine:
+    get:
+      summary: "Get groups the current user belongs to"
+      responses:
+        200:
+          description: "List of groups"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupWithRole'
+
+  /groups/{groupId}:
     parameters:
       - name: groupId
         required: true
@@ -33,44 +68,107 @@ paths:
       operationId: "updateGroup"
       tags:
         - Group
-      description: "Update a group"
+      description: "Update a group name or info"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GroupResponse"
+              $ref: "#/components/schemas/UpdateGroupRequest"
       responses:
         200:
-          description: ""
+          description: "Updated group"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupResponse"
         default:
           description: "Unexpected error"
-  /group:
-    post:
-      operationId: "createGroup"
+    delete:
       tags:
         - Group
-      description: "Create a new group"
+      operationId: "deleteGroup"
+      responses:
+        '204':
+          description: Group deleted
+
+  /groups/{groupId}/members:
+    parameters:
+      - in: path
+        name: groupId
+        required: true
+        schema:
+          type: uuid
+          format: uuid
+    get:
+      tags:
+        - Group
+      summary: "List members of a group"
+      responses:
+        '200':
+          description: "List of members"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupMember'
+    post:
+      tags:
+        - Group
+      summary: "Add user to group"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateGroupRequest"
+              $ref: '#/components/schemas/AddGroupMemberRequest'
       responses:
-        200:
-          description: "Group created"
+        '201':
+          description: "Member added"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GroupResponse"
-        default:
-          description: "Unexpected error"
+                $ref: '#/components/schemas/GroupMember'
 
+  /groups/{groupId}/members/{userId}:
+    parameters:
+      - in: path
+        name: groupId
+        required: true
+        schema:
+          type: uuid
+          format: uuid
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: uuid
+          format: uuid
+    put:
+      tags:
+        - Group
+      summary: "Change role of a group member"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGroupMemberRoleRequest'
+      responses:
+        '200':
+          description: Updated member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupMember'
+    delete:
+      tags:
+        - Group
+      summary: "Remove member from group"
+      responses:
+        '204':
+          description: Member removed
 
 components:
   schemas:
@@ -80,15 +178,69 @@ components:
       properties:
         name:
           type: string
+          maxLength: 100
+
+    UpdateGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          required: false
+          type: string
 
     GroupResponse:
       type: object
       description: "Simple Group object"
       properties:
+        uuid:
+          type: uuid
+          format: uuid
         name:
           type: string
-        members:
-          type: array
-          items:
-            type: object
-            ref: "./UserApi.yaml#/components/schemas/BasicUserInfo"
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    GroupRole:
+      type: string
+      enum: [ GROUP_MEMBER, GROUP_ADMIN ]
+
+    GroupWithRole:
+      allOf:
+        - $ref: '#/components/schemas/GroupResponse'
+        - type: object
+          properties:
+            role:
+              $ref: '#/components/schemas/GroupRole'
+
+    GroupMember:
+      type: object
+      properties:
+        userId:
+          type: uuid
+          format: uuid
+        username:
+          type: string
+        role:
+          $ref: '#/components/schemas/GroupRole'
+
+    AddGroupMemberRequest:
+      type: object
+      required: [ userId, role ]
+      properties:
+        userId:
+          type: uuid
+          format: uuid
+        role:
+          $ref: '#/components/schemas/GroupRole'
+
+    UpdateGroupMemberRoleRequest:
+      type: object
+      required: [ role ]
+      properties:
+        role:
+          $ref: '#/components/schemas/GroupRole'
