@@ -30,6 +30,8 @@ paths:
 
   /groups/mine:
     get:
+      tags:
+        - Group
       summary: "Get groups the current user belongs to"
       responses:
         200:
@@ -162,6 +164,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GroupMember'
     delete:
+      operationId: removeMember
       tags:
         - Group
       summary: "Remove member from group"
