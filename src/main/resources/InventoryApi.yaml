@@ -80,12 +80,23 @@ paths:
               $ref: "#/components/schemas/CreateItemRequest"
         required: true
       responses:
-        "201":
+        201:
           description: "Category created"
           content:
             'application/json':
               schema:
                 $ref: "#/components/schemas/CreateItemResponse"
+    delete:
+      tags:
+        - Inventory
+      summary: "Delete an inventory category"
+      operationId: "deleteCategory"
+      responses:
+        200:
+          description: "Category deleted"
+        400:
+          description: "There are still items in this category, cannot delete"
+
   /inventory/items/{uuid}:
     parameters:
       - name: "uuid"
@@ -132,146 +143,6 @@ paths:
       responses:
         "204":
           description: "Item deleted"
-
-  /inventory/items/{uuid}/condition:
-    put:
-      tags:
-        - Inventory
-      summary: "PUT inventory/items/{uuid}/condition"
-      operationId: "updateItemCondition"
-      parameters:
-        - name: "uuid"
-          in: "path"
-          required: true
-          schema:
-            type: "string"
-            format: "uuid"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateItemConditionRequest"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-          content:
-            'application/json':
-              schema:
-                $ref: "#/components/schemas/InventoryItem"
-  /inventory/items/{uuid}/status:
-    put:
-      tags:
-        - Inventory
-      summary: "PUT inventory/items/{uuid}/status"
-      operationId: "updateItemStatus"
-      parameters:
-        - name: "uuid"
-          in: "path"
-          required: true
-          schema:
-            type: "string"
-            format: "uuid"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateItemStatusRequest"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-          content:
-            'application/json':
-              schema:
-                $ref: "#/components/schemas/InventoryItem"
-  /inventory/spaces:
-    get:
-      tags:
-        - Inventory
-      summary: "GET inventory/spaces"
-      operationId: "getInventorySpaces"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            'application/json':
-              schema:
-                $ref: "#/components/schemas/GetInventorySpacesResponse"
-    post:
-      tags:
-        - Inventory
-      summary: "POST inventory/spaces"
-      operationId: "createInventorySpace"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateInventorySpaceRequest"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-          content:
-            'application/json':
-              schema:
-                $ref: "#/components/schemas/InventorySpace"
-  /inventory/spaces/{spaceId}:
-    delete:
-      tags:
-        - Inventory
-      summary: "DELETE inventory/spaces/{spaceId}"
-      operationId: "deleteInventorySpace"
-      parameters:
-        - name: "spaceId"
-          in: "path"
-          required: true
-          schema:
-            type: "string"
-            format: "uuid"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            'application/json':
-              schema:
-                $ref: "#/components/schemas/Void"
-  /inventory/{inventorySpaceName}/items:
-    get:
-      tags:
-        - Inventory
-      summary: "GET inventory/{inventorySpaceName}/items"
-      operationId: "getItemPage"
-      parameters:
-        - name: "inventorySpaceName"
-          in: "path"
-          required: true
-          schema:
-            type: "string"
-        - name: "page"
-          in: "query"
-          required: true
-          schema:
-            type: "integer"
-            format: "int32"
-        - name: "size"
-          in: "query"
-          required: true
-          schema:
-            type: "integer"
-            format: "int32"
-        - name: "filterByNamePrefix"
-          in: "query"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            'application/json':
-              schema:
-                $ref: "#/components/schemas/PagedItemResponse"
 
   /inventory/items/{uuid}/files:
     parameters:
@@ -434,58 +305,9 @@ components:
       properties:
         item:
           $ref: "#/components/schemas/InventoryItem"
-    UpdateItemConditionRequest:
-      type: "object"
-      properties:
-        itemUuid:
-          type: "string"
-          format: "uuid"
-        condition:
-          type: "string"
-          enum:
-            - "NOT_DAMAGED"
-            - "DAMAGED_WEARABLE"
-            - "DAMAGED_NOT_WEARABLE"
-        comment:
-          type: "string"
-    UpdateItemStatusRequest:
-      type: "object"
-      properties:
-        newStatus:
-          type: "string"
-          enum:
-            - "AVAILABLE"
-            - "IN_USE"
-            - "RESERVED"
-            - "LOST"
         managedByUserId:
           type: "string"
           format: "uuid"
-    InventorySpace:
-      type: "object"
-      properties:
-        spaceId:
-          type: "string"
-        spaceName:
-          type: "string"
-        totalItems:
-          type: "integer"
-          format: "int32"
-    GetInventorySpacesResponse:
-      type: "object"
-      properties:
-        spaces:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/InventorySpace"
-    CreateInventorySpaceRequest:
-      type: "object"
-      properties:
-        inventorySpaceName:
-          type: "string"
-    Void:
-      type: "object"
-      properties: { }
     PageMetadata:
       type: "object"
       properties:
