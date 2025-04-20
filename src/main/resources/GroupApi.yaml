@@ -12,6 +12,8 @@ paths:
       tags:
         - Group
       description: "Create a new group"
+      security:
+        - bearerAuth: [ ]
       requestBody:
         required: true
         content:
@@ -33,6 +35,8 @@ paths:
       tags:
         - Group
       summary: "Get groups the current user belongs to"
+      security:
+        - bearerAuth: [ ]
       responses:
         200:
           description: "List of groups"
@@ -55,6 +59,8 @@ paths:
       tags:
         - Group
       operationId: "getGroup"
+      security:
+        - bearerAuth: [ ]
       responses:
         200:
           description: "Get the information to a group by groupId"
@@ -71,6 +77,8 @@ paths:
       tags:
         - Group
       description: "Update a group name or info"
+      security:
+        - bearerAuth: [ ]
       requestBody:
         content:
           application/json:
@@ -89,6 +97,8 @@ paths:
       tags:
         - Group
       operationId: "deleteGroup"
+      security:
+        - bearerAuth: [ ]
       responses:
         '204':
           description: Group deleted
@@ -105,6 +115,8 @@ paths:
       tags:
         - Group
       summary: "List members of a group"
+      security:
+        - bearerAuth: [ ]
       responses:
         '200':
           description: "List of members"
@@ -118,6 +130,8 @@ paths:
       tags:
         - Group
       summary: "Add user to group"
+      security:
+        - bearerAuth: [ ]
       requestBody:
         required: true
         content:
@@ -150,6 +164,8 @@ paths:
       tags:
         - Group
       summary: "Change role of a group member"
+      security:
+        - bearerAuth: [ ]
       requestBody:
         required: true
         content:
@@ -168,6 +184,8 @@ paths:
       tags:
         - Group
       summary: "Remove member from group"
+      security:
+        - bearerAuth: [ ]
       responses:
         '204':
           description: Member removed
@@ -249,3 +267,9 @@ components:
           $ref: '#/components/schemas/GroupRole'
         comment:
           type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

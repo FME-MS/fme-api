@@ -11,6 +11,8 @@ paths:
       tags: [ Inventory ]
       summary: "Create a new inventory item"
       operationId: "createItem"
+      security:
+        - bearerAuth: [ ]
       requestBody:
         required: true
         content:
@@ -27,6 +29,8 @@ paths:
     get:
       tags: [ Inventory ]
       summary: "Get all inventory items with optional pagination"
+      security:
+        - bearerAuth: [ ]
       operationId: "getAllItems"
       parameters:
         - name: page
@@ -59,6 +63,8 @@ paths:
       tags: [ Inventory ]
       summary: "Get all item categories"
       operationId: "getAllItemCategories"
+      security:
+        - bearerAuth: [ ]
       responses:
         '200':
           description: "List of item categories"
@@ -110,6 +116,8 @@ paths:
         - Inventory
       summary: "Get inventory item by ID"
       operationId: "getItemById"
+      security:
+        - bearerAuth: [ ]
       responses:
         "200":
           description: "Inventory item"
@@ -122,6 +130,8 @@ paths:
         - Inventory
       summary: "Update inventory item info"
       operationId: "updateItemInfo"
+      security:
+        - bearerAuth: [ ]
       requestBody:
         required: true
         content:
@@ -140,6 +150,8 @@ paths:
         - Inventory
       summary: "Delete an inventory item"
       operationId: "deleteItem"
+      security:
+        - bearerAuth: [ ]
       responses:
         "204":
           description: "Item deleted"
@@ -156,6 +168,8 @@ paths:
       tags: [Inventory]
       summary: "Upload file to an inventory item"
       operationId: "uploadItemFile"
+      security:
+        - bearerAuth: [ ]
       requestBody:
         required: true
         content:
@@ -174,6 +188,8 @@ paths:
       tags: [Inventory]
       summary: "List files attached to an inventory item"
       operationId: "listItemFiles"
+      security:
+        - bearerAuth: [ ]
       responses:
         '200':
           description: "List of files"
@@ -189,6 +205,8 @@ paths:
       tags: [Inventory]
       summary: "Delete a file from an inventory item"
       operationId: "deleteItemFile"
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: uuid
           in: path
@@ -357,3 +375,9 @@ components:
         - VERLIEHEN
         - VERLIEHEN_EXTERN
         - OTHER
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
