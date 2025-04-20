@@ -84,6 +84,7 @@ components:
 
     AuthTokenResponse:
       type: object
+      required: [accessToken, refreshToken, tokenType, expiresIn, user]
       properties:
         accessToken:
           type: string
