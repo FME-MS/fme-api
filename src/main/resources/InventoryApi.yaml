@@ -8,10 +8,71 @@ servers:
 paths:
   /inventory/items:
     post:
+      tags: [ Inventory ]
+      summary: "Create a new inventory item"
+      operationId: "createItem"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateItemRequest"
+      responses:
+        '201':
+          description: "Item created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InventoryItem"
+    get:
+      tags: [ Inventory ]
+      summary: "Get all inventory items with optional pagination"
+      operationId: "getAllItems"
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: size
+          in: query
+          schema:
+            type: integer
+        - name: categoryId
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: labelId
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: "Paged list of items"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedItemResponse"
+  /inventory/categories:
+    get:
+      tags: [ Inventory ]
+      summary: "Get all item categories"
+      operationId: "getAllItemCategories"
+      responses:
+        '200':
+          description: "List of item categories"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemCategory"
+    post:
       tags:
         - Inventory
-      summary: "POST inventory/items"
-      operationId: "createItem"
+      summary: "Create a new item category"
+      operationId: "createCategory"
       requestBody:
         content:
           application/json:
@@ -22,73 +83,56 @@ paths:
         "200":
           description: "OK"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/CreateItemResponse"
   /inventory/items/{uuid}:
+    parameters:
+      - name: "uuid"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          format: "uuid"
     get:
       tags:
         - Inventory
-      summary: "GET inventory/items/{uuid}"
+      summary: "Get inventory item by ID"
       operationId: "getItemById"
-      parameters:
-        - name: "uuid"
-          in: "path"
-          required: true
-          schema:
-            type: "string"
-            format: "uuid"
       responses:
         "200":
-          description: "OK"
+          description: "Inventory item"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/InventoryItem"
     put:
       tags:
         - Inventory
-      summary: "PUT inventory/items/{uuid}"
+      summary: "Update inventory item info"
       operationId: "updateItemInfo"
-      parameters:
-        - name: "uuid"
-          in: "path"
-          required: true
-          schema:
-            type: "string"
-            format: "uuid"
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UpdateItemInfoRequest"
-        required: true
       responses:
         "200":
-          description: "OK"
+          description: "Updated item"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/InventoryItem"
     delete:
       tags:
         - Inventory
-      summary: "DELETE inventory/items/{uuid}"
+      summary: "Delete an inventory item"
       operationId: "deleteItem"
-      parameters:
-        - name: "uuid"
-          in: "path"
-          required: true
-          schema:
-            type: "string"
-            format: "uuid"
       responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                type: "string"
+        "204":
+          description: "Item deleted"
+
   /inventory/items/{uuid}/condition:
     put:
       tags:
@@ -112,7 +156,7 @@ paths:
         "200":
           description: "OK"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/InventoryItem"
   /inventory/items/{uuid}/status:
@@ -138,7 +182,7 @@ paths:
         "200":
           description: "OK"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/InventoryItem"
   /inventory/spaces:
@@ -151,7 +195,7 @@ paths:
         "200":
           description: "OK"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/GetInventorySpacesResponse"
     post:
@@ -169,7 +213,7 @@ paths:
         "200":
           description: "OK"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/InventorySpace"
   /inventory/spaces/{spaceId}:
@@ -189,7 +233,7 @@ paths:
         "200":
           description: "OK"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Void"
   /inventory/{inventorySpaceName}/items:
@@ -225,11 +269,91 @@ paths:
         "200":
           description: "OK"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/PagedItemResponse"
+
+  /inventory/items/{uuid}/files:
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      tags: [Inventory]
+      summary: "Upload file to an inventory item"
+      operationId: "uploadItemFile"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: "File uploaded"
+
+    get:
+      tags: [Inventory]
+      summary: "List files attached to an inventory item"
+      operationId: "listItemFiles"
+      responses:
+        '200':
+          description: "List of files"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemFileMetadata"
+
+  /inventory/items/{uuid}/files/{fileId}:
+    delete:
+      tags: [Inventory]
+      summary: "Delete a file from an inventory item"
+      operationId: "deleteItemFile"
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: fileId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: "File deleted"
+
 components:
   schemas:
+    ItemCategory:
+      type: object
+      description: "An item category for grouping inventory items"
+      properties:
+        categoryId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 255
+        createdAt:
+          type: string
+          format: date-time
     ItemCondition:
       type: "object"
       properties:
@@ -285,14 +409,21 @@ components:
           type: "integer"
           format: "int64"
     CreateItemRequest:
-      type: "object"
+      type: object
+      required: [ name, categoryId, location ]
       properties:
         name:
-          type: "string"
+          type: string
         description:
-          type: "string"
-        spaceName:
-          type: "string"
+          type: string
+        categoryId:
+          type: string
+          format: uuid
+        location:
+          $ref: "#/components/schemas/ItemLocation"
+        currentHolderUserId:
+          type: string
+          format: uuid
     CreateItemResponse:
       type: "object"
       properties:
@@ -379,3 +510,28 @@ components:
             $ref: "#/components/schemas/InventoryItem"
         pageMetadata:
           $ref: "#/components/schemas/PageMetadata"
+    ItemFileMetadata:
+      type: object
+      properties:
+        fileId:
+          type: string
+          format: uuid
+        fileName:
+          type: string
+        contentType:
+          type: string
+        uploadedAt:
+          type: string
+          format: date-time
+        url:
+          type: string
+          description: "Pre-signed or public download URL"
+    ItemLocation:
+      type: string
+      enum:
+        - HJK
+        - IFAS
+        - WDS
+        - VERLIEHEN
+        - VERLIEHEN_EXTERN
+        - OTHER

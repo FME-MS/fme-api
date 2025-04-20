@@ -70,7 +70,6 @@ paths:
         - Group
       description: "Update a group name or info"
       requestBody:
-        required: true
         content:
           application/json:
             schema:
@@ -187,7 +186,6 @@ components:
           type: string
           maxLength: 100
         description:
-          required: false
           type: string
 
     GroupResponse:
@@ -237,6 +235,8 @@ components:
           format: uuid
         role:
           $ref: '#/components/schemas/GroupRole'
+        comment:
+          type: string
 
     UpdateGroupMemberRoleRequest:
       type: object
@@ -244,3 +244,5 @@ components:
       properties:
         role:
           $ref: '#/components/schemas/GroupRole'
+        comment:
+          type: string
