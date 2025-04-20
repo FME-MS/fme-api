@@ -97,3 +97,15 @@ components:
         expiresIn:
           type: integer
           description: "Token validity duration in seconds"
+        user:
+          type: object
+          properties:
+            userId:
+              type: string
+              format: uuid
+            username:
+              type: string
+            roles:
+              type: array
+              items:
+                type: string

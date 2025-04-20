@@ -184,7 +184,6 @@
                                     <invokerPackage>${api.base.package}.inventory.client</invokerPackage>
                                     <generateApis>true</generateApis>
                                     <generateApiDocumentation>true</generateApiDocumentation>
-                                    <generateSupportingFiles>false</generateSupportingFiles>
                                     <addCompileSourceRoot>true</addCompileSourceRoot>
                                     <generatorName>spring</generatorName>
                                     <cleanupOutput>true</cleanupOutput>
@@ -238,7 +237,6 @@
                                     <invokerPackage>${api.base.package}.groups.client</invokerPackage>
                                     <generateApis>true</generateApis>
                                     <generateApiDocumentation>true</generateApiDocumentation>
-                                    <generateSupportingFiles>false</generateSupportingFiles>
                                     <addCompileSourceRoot>true</addCompileSourceRoot>
                                     <generatorName>spring</generatorName>
                                     <cleanupOutput>true</cleanupOutput>
@@ -292,7 +290,6 @@
                                     <invokerPackage>${api.base.package}.users.client</invokerPackage>
                                     <generateApis>true</generateApis>
                                     <generateApiDocumentation>true</generateApiDocumentation>
-                                    <generateSupportingFiles>false</generateSupportingFiles>
                                     <addCompileSourceRoot>true</addCompileSourceRoot>
                                     <generatorName>spring</generatorName>
                                     <cleanupOutput>true</cleanupOutput>
@@ -329,6 +326,56 @@
                                         <additionalModelTypeAnnotations>
                                             @lombok.Builder;@lombok.AllArgsConstructor;@lombok.NoArgsConstructor
                                         </additionalModelTypeAnnotations>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>fme-authentication</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>${project.build.directory}/schema/AuthenticationApi.yaml</inputSpec>
+                                    <output>${project.build.directory}/generated-sources/openapi-codegen/authentication</output>
+                                    <apiPackage>${api.base.package}.authentication.api</apiPackage>
+                                    <modelPackage>${api.base.package}.authentication.resource</modelPackage>
+                                    <invokerPackage>${api.base.package}.authentication.client</invokerPackage>
+                                    <generateApis>true</generateApis>
+                                    <generateApiDocumentation>true</generateApiDocumentation>
+                                    <addCompileSourceRoot>true</addCompileSourceRoot>
+                                    <generatorName>spring</generatorName>
+                                    <cleanupOutput>true</cleanupOutput>
+                                    <generateSupportingFiles>false</generateSupportingFiles>
+                                    <typeMappings>
+                                        <typeMapping>
+                                            uuid=java.util.UUID
+                                        </typeMapping>
+                                    </typeMappings>
+                                    <importMappings>
+                                        <importMapping>
+                                            uuid=java.util.UUID
+                                        </importMapping>
+                                    </importMappings>
+                                    <configOptions>
+                                        <hateoas>false</hateoas>
+                                        <dateLibrary>java8-localdatetime</dateLibrary>
+                                        <delegatePattern>false</delegatePattern>
+                                        <enumPropertyNaming>MACRO_CASE</enumPropertyNaming>
+                                        <interfaceOnly>true</interfaceOnly>
+                                        <library>spring-boot</library>
+                                        <openApiNullable>false</openApiNullable>
+                                        <performBeanValidation>false</performBeanValidation>
+                                        <unhandledException>true</unhandledException>
+                                        <useBeanValidation>false</useBeanValidation>
+                                        <useJakartaEe>true</useJakartaEe>
+                                        <useOptional>false</useOptional>
+                                        <useResponseEntity>true</useResponseEntity>
+                                        <useSpringBoot3>true</useSpringBoot3>
+                                        <useTags>true</useTags>
+                                        <serializableModel>true</serializableModel>
+                                        <skipDefaultInterface>true</skipDefaultInterface>
+                                        <swaggerDocketConfig>false</swaggerDocketConfig><!--suppress UnresolvedMavenProperty -->
                                     </configOptions>
                                 </configuration>
                             </execution>
@@ -446,6 +493,21 @@
                                     <output>${project.basedir}/openapi-codegen/users</output>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>authentication</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <configOptions>
+                                        <npmName>@${project.artifactId}/authentication</npmName>
+                                        <apiModulePrefix>authentication</apiModulePrefix>
+                                    </configOptions>
+                                    <inputSpec>${project.basedir}/src/main/resources/AuthenticationApi.yaml</inputSpec>
+                                    <output>${project.basedir}/openapi-codegen/authentication</output>
+                                </configuration>
+                            </execution>
                         </executions>
                         <configuration>
                             <generatorName>typescript-angular</generatorName>
@@ -497,6 +559,16 @@
                                     <workingDirectory>openapi-codegen/users</workingDirectory>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>npm-install-authentication</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <phase>compile</phase>
+                                <configuration>
+                                    <workingDirectory>openapi-codegen/authentication</workingDirectory>
+                                </configuration>
+                            </execution>
 
                             <!--                    build the dist-->
 
@@ -532,6 +604,17 @@
                                 <configuration>
                                     <arguments>run build</arguments>
                                     <workingDirectory>openapi-codegen/users</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>npm-build-authentication</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <phase>process-classes</phase>
+                                <configuration>
+                                    <arguments>run build</arguments>
+                                    <workingDirectory>openapi-codegen/authentication</workingDirectory>
                                 </configuration>
                             </execution>
 
