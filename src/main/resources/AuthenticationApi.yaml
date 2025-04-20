@@ -1,0 +1,99 @@
+openapi: 3.1.0
+info:
+  title: Authentication Api
+  description: Authentication Api
+  version: 1.0.0-SNAPSHOT
+servers:
+  - url: 'http://localhost:8080/api'
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: "Authenticate a user and return a JWT"
+      operationId: "login"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        '200':
+          description: "Login successful, token issued"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthTokenResponse"
+        '401':
+          description: "Unauthorized"
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: "Refresh an access token using a refresh token"
+      operationId: "refreshToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshTokenRequest"
+      responses:
+        '200':
+          description: "Token refreshed"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthTokenResponse"
+        '401':
+          description: "Invalid or expired refresh token"
+
+  /auth/logout:
+    post:
+      tags: [ Auth ]
+      summary: "Log out and invalidate refresh token"
+      operationId: "logout"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshTokenRequest"
+      responses:
+        '204':
+          description: "Logged out successfully"
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+
+    RefreshTokenRequest:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string
+
+    AuthTokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: "JWT access token"
+        refreshToken:
+          type: string
+          description: "Optional refresh token (if supported)"
+        tokenType:
+          type: string
+          example: "Bearer"
+        expiresIn:
+          type: integer
+          description: "Token validity duration in seconds"
