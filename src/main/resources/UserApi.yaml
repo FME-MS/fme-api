@@ -259,7 +259,7 @@ components:
 
     GlobalRole:
       type: string
-      enum: [ USER, ADMIN ]
+      enum: [ MITGLIED, VORSTAND, ADMIN ]
 
     UpdateUserRequest:
       type: object
