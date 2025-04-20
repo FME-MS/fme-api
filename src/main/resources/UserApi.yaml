@@ -76,7 +76,7 @@ paths:
         required: true
         in: path
         schema:
-          type: uuid
+          type: string
           format: uuid
     get:
       operationId: "getUserById"
@@ -199,7 +199,7 @@ components:
       type: object
       properties:
         userId:
-          type: uuid
+          type: string
           format: uuid
         username:
           type: string
@@ -237,7 +237,7 @@ components:
       type: object
       properties:
         userId:
-          type: uuid
+          type: string
           format: uuid
         username:
           type: string

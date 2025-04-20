@@ -80,8 +80,8 @@ paths:
               $ref: "#/components/schemas/CreateItemRequest"
         required: true
       responses:
-        "200":
-          description: "OK"
+        "201":
+          description: "Category created"
           content:
             'application/json':
               schema:

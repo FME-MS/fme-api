@@ -49,7 +49,7 @@ paths:
         required: true
         in: path
         schema:
-          type: uuid
+          type: string
           format: uuid
     get:
       tags:
@@ -99,7 +99,7 @@ paths:
         name: groupId
         required: true
         schema:
-          type: uuid
+          type: string
           format: uuid
     get:
       tags:
@@ -138,13 +138,13 @@ paths:
         name: groupId
         required: true
         schema:
-          type: uuid
+          type: string
           format: uuid
       - in: path
         name: userId
         required: true
         schema:
-          type: uuid
+          type: string
           format: uuid
     put:
       tags:
@@ -196,7 +196,7 @@ components:
       description: "Simple Group object"
       properties:
         uuid:
-          type: uuid
+          type: string
           format: uuid
         name:
           type: string
@@ -222,7 +222,7 @@ components:
       type: object
       properties:
         userId:
-          type: uuid
+          type: string
           format: uuid
         username:
           type: string
@@ -234,7 +234,7 @@ components:
       required: [ userId, role ]
       properties:
         userId:
-          type: uuid
+          type: string
           format: uuid
         role:
           $ref: '#/components/schemas/GroupRole'
