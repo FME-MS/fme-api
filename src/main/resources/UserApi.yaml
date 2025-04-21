@@ -205,9 +205,7 @@ components:
         birthdate:
           type: date
         address:
-          type: object
-          schema:
-            $ref: '#/components/schemas/Address'
+          $ref: '#/components/schemas/Address'
 
     UserProfile:
       type: object
@@ -261,7 +259,6 @@ components:
           type: string
 
     Address:
-      type: object
       properties:
         zipCode:
           type: string
