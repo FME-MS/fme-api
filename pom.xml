@@ -456,6 +456,8 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/inventory</npmName>
+                                        <npmVersion>${project.version}</npmVersion>
+                                        <npmRepository>https://github.com/FME-MS/fme-api</npmRepository>
                                         <npmRegistry>https://npm.pkg.github.com</npmRegistry>
                                         <apiModulePrefix>inventory</apiModulePrefix>
                                     </configOptions>
@@ -472,6 +474,8 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/groups</npmName>
+                                        <npmVersion>${project.version}</npmVersion>
+                                        <npmRepository>https://github.com/FME-MS/fme-api</npmRepository>
                                         <npmRegistry>https://npm.pkg.github.com</npmRegistry>
                                         <apiModulePrefix>groups</apiModulePrefix>
                                     </configOptions>
@@ -488,6 +492,8 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/users</npmName>
+                                        <npmVersion>${project.version}</npmVersion>
+                                        <npmRepository>https://github.com/FME-MS/fme-api</npmRepository>
                                         <npmRegistry>https://npm.pkg.github.com</npmRegistry>
                                         <apiModulePrefix>users</apiModulePrefix>
                                     </configOptions>
@@ -504,6 +510,8 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/authentication</npmName>
+                                        <npmVersion>${project.version}</npmVersion>
+                                        <npmRepository>https://github.com/FME-MS/fme-api</npmRepository>
                                         <npmRegistry>https://npm.pkg.github.com</npmRegistry>
                                         <apiModulePrefix>authentication</apiModulePrefix>
                                     </configOptions>
