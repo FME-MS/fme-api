@@ -456,9 +456,6 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/inventory</npmName>
-                                        <npmVersion>${project.version}</npmVersion>
-                                        <npmRegistry>https://npm.pkg.github.com</npmRegistry>
-                                        <npmRepository>https://npm.pkg.github.com</npmRepository>
                                         <apiModulePrefix>inventory</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/InventoryApi.yaml</inputSpec>
@@ -474,9 +471,6 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/groups</npmName>
-                                        <npmVersion>${project.version}</npmVersion>
-                                        <npmRegistry>https://npm.pkg.github.com</npmRegistry>
-                                        <npmRepository>https://npm.pkg.github.com</npmRepository>
                                         <apiModulePrefix>groups</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/GroupApi.yaml</inputSpec>
@@ -492,9 +486,6 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/users</npmName>
-                                        <npmVersion>${project.version}</npmVersion>
-                                        <npmRegistry>https://npm.pkg.github.com</npmRegistry>
-                                        <npmRepository>https://npm.pkg.github.com</npmRepository>
                                         <apiModulePrefix>users</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/UserApi.yaml</inputSpec>
@@ -510,9 +501,6 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/authentication</npmName>
-                                        <npmVersion>${project.version}</npmVersion>
-                                        <npmRegistry>https://npm.pkg.github.com</npmRegistry>
-                                        <npmRepository>https://npm.pkg.github.com</npmRepository>
                                         <apiModulePrefix>authentication</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/AuthenticationApi.yaml</inputSpec>
@@ -522,10 +510,13 @@
                         </executions>
                         <configuration>
                             <generatorName>typescript-angular</generatorName>
+                            <gitHost>https://github.com/</gitHost>
+                            <gitUserId>FME-MS</gitUserId>
+                            <gitRepoId>fme-api</gitRepoId>
                             <configOptions>
                                 <ngVersion>19</ngVersion>
                                 <npmVersion>${project.version}</npmVersion>
-                            </configOptions>
+                                <npmRepository>https://npm.pkg.github.com</npmRepository>                            </configOptions>
                         </configuration>
                     </plugin>
                     <plugin>
