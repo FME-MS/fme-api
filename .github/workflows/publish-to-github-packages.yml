@@ -1,5 +1,9 @@
 name: Generate & Publish TS Clients
 
+permissions:
+  contents: read    # so your build steps can clone and read code
+  packages: write   # so you can publish to GitHub Packages
+
 on:
   push:
     branches:
