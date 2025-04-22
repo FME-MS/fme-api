@@ -39,12 +39,13 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Looking for generated clients in openapi-codegen/…"
+          cp .npmrc ./openapi-codegen/.npmrc
           for pkg in openapi-codegen/*/; do
             if [ -f "$pkg/package.json" ]; then
               echo "→ Publishing $pkg"
               cd "$pkg"
               npm install           # ensure deps are there
-              npm publish dist --registry https://npm.pkg.github.com # uses the publishConfig.registry in package.json
+              npm publish dist # uses the publishConfig.registry in package.json
               cd - >/dev/null
             fi
           done
