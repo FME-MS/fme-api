@@ -44,8 +44,11 @@ jobs:
             if [ -f "$pkg/package.json" ]; then
               echo "→ Publishing $pkg"
               cd "$pkg"
+              cat package.json
               npm install           # ensure deps are there
-              npm publish dist # uses the publishConfig.registry in package.json
+              cd dist
+              cat package.json
+              npm publish # uses the publishConfig.registry in package.json
               cd - >/dev/null
             fi
           done
