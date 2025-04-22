@@ -51,7 +51,7 @@ paths:
                 $ref: '#/components/schemas/PagedUserResponse'
 
     post:
-      operationId: "createUser"
+      operationId: "registerUser"
       tags:
         - User
       summary: "Register a new user"
@@ -63,7 +63,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateUserRequest"
+              $ref: "#/components/schemas/RegisterUserRequest"
       responses:
         201:
           description: "User created"
@@ -181,7 +181,7 @@ paths:
 
 components:
   schemas:
-    CreateUserRequest:
+    RegisterUserRequest:
       type: object
       required: [ username, password, email, firstName, lastName ]
       properties:
