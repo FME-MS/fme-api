@@ -30,7 +30,7 @@ jobs:
 
       # 3) Generate your TS clients
       - name: Maven package (generate TS)
-        run: mvn clean install -DskipTests
+        run: mvn clean install -DgenerateNpm -DskipTests
 
       # 4) Publish each generated package
       - name: Publish npm packages
