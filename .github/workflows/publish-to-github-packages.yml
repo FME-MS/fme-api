@@ -27,6 +27,7 @@ jobs:
           node-version: '22'
           registry-url: https://npm.pkg.github.com
           scope: '@tobis1441'
+          always-auth: true
 
       # 3) Generate your TS clients
       - name: Maven package (generate TS)
