@@ -44,7 +44,7 @@ jobs:
               echo "→ Publishing $pkg"
               cd "$pkg"
               npm install           # ensure deps are there
-              npm publish           # uses the publishConfig.registry in package.json
+              npm publish dist          # uses the publishConfig.registry in package.json
               cd - >/dev/null
             fi
           done
