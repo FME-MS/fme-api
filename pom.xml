@@ -5,14 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.schnuffel.fme</groupId>
-    <artifactId>fme-api</artifactId>
+    <artifactId>fme-ms</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
-    <name>fme-api</name>
+    <name>fme-ms</name>
     <description>FME Application backend API</description>
-
 
     <properties>
         <java.lang.level>21</java.lang.level>
