@@ -457,6 +457,7 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/inventory</npmName>
+                                        <npmRegistry>https://npm.pkg.github.com</npmRegistry>
                                         <apiModulePrefix>inventory</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/InventoryApi.yaml</inputSpec>
@@ -472,6 +473,7 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/groups</npmName>
+                                        <npmRegistry>https://npm.pkg.github.com</npmRegistry>
                                         <apiModulePrefix>groups</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/GroupApi.yaml</inputSpec>
@@ -487,6 +489,7 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/users</npmName>
+                                        <npmRegistry>https://npm.pkg.github.com</npmRegistry>
                                         <apiModulePrefix>users</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/UserApi.yaml</inputSpec>
@@ -502,6 +505,7 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/authentication</npmName>
+                                        <npmRegistry>https://npm.pkg.github.com</npmRegistry>
                                         <apiModulePrefix>authentication</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/AuthenticationApi.yaml</inputSpec>
