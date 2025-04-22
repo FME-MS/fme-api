@@ -510,7 +510,7 @@
                         </executions>
                         <configuration>
                             <generatorName>typescript-angular</generatorName>
-                            <gitHost>https://github.com/</gitHost>
+                            <gitHost>github.com</gitHost>
                             <gitUserId>FME-MS</gitUserId>
                             <gitRepoId>fme-api</gitRepoId>
                             <configOptions>
