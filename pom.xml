@@ -457,8 +457,8 @@
                                     <configOptions>
                                         <npmName>@${project.artifactId}/inventory</npmName>
                                         <npmVersion>${project.version}</npmVersion>
-                                        <npmRepository>https://github.com/FME-MS/fme-api</npmRepository>
                                         <npmRegistry>https://npm.pkg.github.com</npmRegistry>
+                                        <npmRepository>https://npm.pkg.github.com</npmRepository>
                                         <apiModulePrefix>inventory</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/InventoryApi.yaml</inputSpec>
@@ -475,8 +475,8 @@
                                     <configOptions>
                                         <npmName>@${project.artifactId}/groups</npmName>
                                         <npmVersion>${project.version}</npmVersion>
-                                        <npmRepository>https://github.com/FME-MS/fme-api</npmRepository>
                                         <npmRegistry>https://npm.pkg.github.com</npmRegistry>
+                                        <npmRepository>https://npm.pkg.github.com</npmRepository>
                                         <apiModulePrefix>groups</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/GroupApi.yaml</inputSpec>
@@ -493,8 +493,8 @@
                                     <configOptions>
                                         <npmName>@${project.artifactId}/users</npmName>
                                         <npmVersion>${project.version}</npmVersion>
-                                        <npmRepository>https://github.com/FME-MS/fme-api</npmRepository>
                                         <npmRegistry>https://npm.pkg.github.com</npmRegistry>
+                                        <npmRepository>https://npm.pkg.github.com</npmRepository>
                                         <apiModulePrefix>users</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/UserApi.yaml</inputSpec>
@@ -511,8 +511,8 @@
                                     <configOptions>
                                         <npmName>@${project.artifactId}/authentication</npmName>
                                         <npmVersion>${project.version}</npmVersion>
-                                        <npmRepository>https://github.com/FME-MS/fme-api</npmRepository>
                                         <npmRegistry>https://npm.pkg.github.com</npmRegistry>
+                                        <npmRepository>https://npm.pkg.github.com</npmRepository>
                                         <apiModulePrefix>authentication</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/AuthenticationApi.yaml</inputSpec>
