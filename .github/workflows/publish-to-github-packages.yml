@@ -1,0 +1,50 @@
+name: Generate & Publish TS Clients
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Check out your code
+      - uses: actions/checkout@v3
+
+      # 2) Set up Java (for Maven) and Node (for npm)
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          registry-url: https://npm.pkg.github.com
+          scope: '@tobis1441'
+
+      # 3) Generate your TS clients
+      - name: Maven package (generate TS)
+        run: mvn clean install -DskipTests
+
+      # 4) Publish each generated package
+      - name: Publish npm packages
+        working-directory: .
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Looking for generated clients in openapi-codegen/…"
+          for pkg in openapi-codegen/*/; do
+            if [ -f "$pkg/package.json" ]; then
+              echo "→ Publishing $pkg"
+              cd "$pkg"
+              npm install           # ensure deps are there
+              npm publish           # uses the publishConfig.registry in package.json
+              cd - >/dev/null
+            fi
+          done
