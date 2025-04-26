@@ -83,7 +83,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateItemRequest"
+              $ref: "#/components/schemas/CreateItemCategoryRequest"
         required: true
       responses:
         201:
@@ -91,7 +91,7 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: "#/components/schemas/CreateItemResponse"
+                $ref: "#/components/schemas/ItemCategory"
     delete:
       tags:
         - Inventory
@@ -254,7 +254,7 @@ components:
             - "DAMAGED_NOT_WEARABLE"
         comment:
           type: "string"
-    InventoryStatusEntity:
+    AvailabilityStatus:
       type: "object"
       properties:
         uuid:
@@ -289,11 +289,11 @@ components:
         itemCondition:
           $ref: "#/components/schemas/ItemCondition"
         currentStatus:
-          $ref: "#/components/schemas/InventoryStatusEntity"
+          $ref: "#/components/schemas/AvailabilityStatus"
         statusHistory:
           type: "array"
           items:
-            $ref: "#/components/schemas/InventoryStatusEntity"
+            $ref: "#/components/schemas/AvailabilityStatus"
         version:
           type: "integer"
           format: "int64"
@@ -318,6 +318,14 @@ components:
       properties:
         item:
           $ref: "#/components/schemas/InventoryItem"
+    CreateItemCategoryRequest:
+      type: object
+      required: [ name ]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
     UpdateItemInfoRequest:
       type: "object"
       properties:

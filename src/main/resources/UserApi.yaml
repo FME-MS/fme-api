@@ -203,7 +203,8 @@ components:
           type: string
           maxLength: 100
         birthdate:
-          type: date
+          type: string
+          format: date
         address:
           $ref: '#/components/schemas/Address'
 
