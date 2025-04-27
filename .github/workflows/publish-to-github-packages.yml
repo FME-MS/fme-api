@@ -62,12 +62,13 @@ jobs:
               OWNER=${GITHUB_REPOSITORY_OWNER}
               echo "   • Deleting existing snapshot versions of $OWNER for $NAME@$VERSION…"
               gh api \
-                /orgs/${OWNER}/packages/npm/${pkg}/versions \
+                /${OWNER}/${REPO}/packages/${pkg}/versions \
                 -q ".[] | select(.metadata.package_version==\"${VERSION}\") | .id" \
                 | while read id; do
                     echo "     – deleting version id $id"
+                    echo "Calling route: /orgs/${OWNER}/packages/npm/${pkg}/${id}"
                     gh api -X DELETE \
-                      /orgs/${OWNER}/packages/npm/${NAME}/versions/${id}
+                      /orgs/${OWNER}/packages/npm/${pkg}/versions/${id}
                   done
 
                 # 4) Publish the new one
