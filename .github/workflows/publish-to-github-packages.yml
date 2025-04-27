@@ -62,7 +62,7 @@ jobs:
               OWNER=${GITHUB_REPOSITORY_OWNER}
               echo "   • Deleting existing snapshot versions of $OWNER for $NAME@$VERSION…"
               gh api \
-                /repos/${OWNER}/${REPO}/packages/npm/${pkg}/versions?per_page=100 \
+                /orgs/${OWNER}/packages/npm/${pkg}/versions \
                 -q ".[] | select(.metadata.package_version==\"${VERSION}\") | .id" \
                 | while read id; do
                     echo "     – deleting version id $id"
