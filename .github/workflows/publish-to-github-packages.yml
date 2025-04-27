@@ -61,8 +61,9 @@ jobs:
               REPO=fme-api
               OWNER=${GITHUB_REPOSITORY_OWNER}
               echo "   • Deleting existing snapshot versions of $OWNER for $NAME@$VERSION…"
+              echo "Calling route: /${OWNER}/${REPO}/pkgs/npm/${pkg}/versions"
               gh api \
-                /${OWNER}/${REPO}/packages/${pkg}/versions \
+                /${OWNER}/${REPO}/pkgs/npm/${pkg}/versions \
                 -q ".[] | select(.metadata.package_version==\"${VERSION}\") | .id" \
                 | while read id; do
                     echo "     – deleting version id $id"
