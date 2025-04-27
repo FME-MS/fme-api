@@ -57,17 +57,18 @@ jobs:
               cd "$pkg"
           
               NAME=$(jq -r .name package.json)
-                VERSION=$(jq -r .version package.json)
-                OWNER=${GITHUB_REPOSITORY_OWNER}
-                echo "   • Deleting existing snapshot versions for $NAME@$VERSION…"
-                gh api \
-                  /orgs/${OWNER}/packages/npm/${NAME}/versions?per_page=100 \
-                  -q ".[] | select(.metadata.package_version==\"${VERSION}\") | .id" \
-                  | while read id; do
-                      echo "     – deleting version id $id"
-                      gh api -X DELETE \
-                        /orgs/${OWNER}/packages/npm/${NAME}/versions/${id}
-                    done
+              VERSION=$(jq -r .version package.json)
+              REPO=fme-api
+              OWNER=${GITHUB_REPOSITORY_OWNER}
+              echo "   • Deleting existing snapshot versions of $OWNER for $NAME@$VERSION…"
+              gh api \
+                /repos/${OWNER}/${REPO}/packages/npm/${pkg}/versions?per_page=100 \
+                -q ".[] | select(.metadata.package_version==\"${VERSION}\") | .id" \
+                | while read id; do
+                    echo "     – deleting version id $id"
+                    gh api -X DELETE \
+                      /orgs/${OWNER}/packages/npm/${NAME}/versions/${id}
+                  done
 
                 # 4) Publish the new one
                 echo "   • Publishing $NAME@$VERSION"
