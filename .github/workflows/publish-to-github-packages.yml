@@ -51,9 +51,8 @@ jobs:
           cp .npmrc ./openapi-codegen/.npmrc
           
           for pkg in openapi-codegen/*/; do
-          pkg_name=$(basename "${dir%/}")
+          pkg_name=$(basename "${pkg%/}")
             if [ -f "$pkg/package.json" ]; then
-              echo "→ Publishing $pkg"
               (
               cd "$pkg"
           
