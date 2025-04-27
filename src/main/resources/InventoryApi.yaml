@@ -4,7 +4,7 @@ info:
   description: "fme_service API"
   version: "1.0.0"
 servers:
-  - url: "https://fme_service"
+  - url: 'http://localhost:8080/api'
 paths:
   /inventory/items:
     post:
