@@ -203,7 +203,8 @@ components:
         name:
           type: string
           maxLength: 100
-
+        description:
+          type: string
     UpdateGroupRequest:
       type: object
       properties:
