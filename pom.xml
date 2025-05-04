@@ -516,7 +516,6 @@
                             <configOptions>
                                 <serviceFileSuffix>.api</serviceFileSuffix>
                                 <serviceSuffix>Api</serviceSuffix>
-                                <providedInRoot>true</providedInRoot>
                                 <ngVersion>19</ngVersion>
                                 <npmVersion>${project.version}</npmVersion>
                                 <npmRepository>https://npm.pkg.github.com</npmRepository>                            </configOptions>
