@@ -6,7 +6,6 @@ info:
 servers:
   - url: 'http://localhost:8080/api'
 paths:
-
   /users/me:
     get:
       operationId: "getCurrentUser"
