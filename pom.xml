@@ -13,6 +13,21 @@
     <name>fme-ms</name>
     <description>FME Application backend API</description>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/fme-ms/fme-service</url>
+        </repository>
+        <snapshotRepository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/fme-ms/fme-service</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </snapshotRepository>
+    </distributionManagement>
     <properties>
         <java.lang.level>21</java.lang.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -516,6 +531,7 @@
                             <configOptions>
                                 <serviceFileSuffix>.api</serviceFileSuffix>
                                 <serviceSuffix>Api</serviceSuffix>
+                                <providedInRoot>false</providedInRoot>
                                 <ngVersion>19</ngVersion>
                                 <npmVersion>${project.version}</npmVersion>
                                 <npmRepository>https://npm.pkg.github.com</npmRepository>                            </configOptions>
