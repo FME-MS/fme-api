@@ -30,8 +30,23 @@ jobs:
           registry-url: https://npm.pkg.github.com
           scope: '@fme-ms'
 
-      - name: Maven package (generate TS)
-        run: mvn clean install -P generate-npm -DskipTests
+      - name: Configure Maven for GitHub Packages
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml <<EOF
+          <settings>
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${{ github.actor }}</username>
+                <password>${{ secrets.GITHUB_TOKEN }}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+
+      - name: Maven package (generate sources)
+        run: mvn clean install -P generate-npm -P generate-java -DskipTests
 
 
       - name: Get project version
@@ -39,6 +54,13 @@ jobs:
         run: |
           echo "VERSION=$(mvn help:evaluate \
             -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Publish .jar file
+        working-directory: .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mvn deploy -DskipTests
 
       - name: Publish npm packages
         working-directory: .
@@ -74,7 +96,7 @@ jobs:
 
                 # 4) Publish the new one
                 echo "   • Publishing $NAME@$VERSION"
-              npm install
+              # npm install  ------------------- DO I NEED THIS?
               cd dist
               npm publish
               )
