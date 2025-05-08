@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.schnuffel.fme</groupId>
-    <artifactId>fme-ms</artifactId>
+    <artifactId>fme-api</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
-    <name>fme-ms</name>
+    <name>fme-api</name>
     <description>FME Application backend API</description>
 
     <distributionManagement>
@@ -471,6 +471,7 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/inventory</npmName>
+                                        <npmVersion>${project.version}</npmVersion>
                                         <apiModulePrefix>inventory</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/InventoryApi.yaml</inputSpec>
@@ -486,6 +487,7 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/groups</npmName>
+                                        <npmVersion>${project.version}</npmVersion>
                                         <apiModulePrefix>groups</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/GroupApi.yaml</inputSpec>
@@ -501,6 +503,7 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/users</npmName>
+                                        <npmVersion>${project.version}</npmVersion>
                                         <apiModulePrefix>users</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/UserApi.yaml</inputSpec>
@@ -516,6 +519,7 @@
                                 <configuration>
                                     <configOptions>
                                         <npmName>@${project.artifactId}/authentication</npmName>
+                                        <npmVersion>${project.version}</npmVersion>
                                         <apiModulePrefix>authentication</apiModulePrefix>
                                     </configOptions>
                                     <inputSpec>${project.basedir}/src/main/resources/AuthenticationApi.yaml</inputSpec>

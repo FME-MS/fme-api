@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: '22'
           registry-url: https://npm.pkg.github.com
-          scope: '@fme-ms'
+          scope: '@fme-api'
 
       - name: Configure Maven for GitHub Packages
         run: |
@@ -65,10 +65,8 @@ jobs:
       - name: Publish npm packages
         working-directory: .
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh auth login --with-token <<< "${GITHUB_TOKEN}"
-          
           echo "Looking for generated clients in openapi-codegen/…"
           cp .npmrc ./openapi-codegen/.npmrc
           
@@ -94,9 +92,7 @@ jobs:
                       /orgs/${OWNER}/packages/npm/${pkg}/versions/${id}
                   done
 
-                # 4) Publish the new one
                 echo "   • Publishing $NAME@$VERSION"
-              # npm install  ------------------- DO I NEED THIS?
               cd dist
               npm publish
               )
