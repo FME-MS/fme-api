@@ -33,9 +33,12 @@ jobs:
           java-version: '21'
           cache: 'maven'
           settings-path: ${{ github.workspace }}
-          server-username: ${{ github.actor }}
-          server-password: ${{ secrets.GITHUB_TOKEN }}
-        
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+              
       - name: Show settings.xml
         run: cat $GITHUB_WORKSPACE/settings.xml
 
