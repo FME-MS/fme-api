@@ -32,8 +32,13 @@ jobs:
           distribution: 'zulu'
           java-version: '21'
           cache: 'maven'
+          settings-path: ${{ github.workspace }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Show settings.xml
+        run: cat $GITHUB_WORKSPACE/settings.xml
+
 
       - name: Maven package (generate sources)
         run: mvn -B install -P generate-npm -P generate-java -DskipTests
