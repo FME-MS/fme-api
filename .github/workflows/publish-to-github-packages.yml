@@ -21,6 +21,8 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+          server-id: github
+          settings-path: ${{ github.workspace }}
 
       - name: Set up Node.js 22
         uses: actions/setup-node@v3
@@ -28,25 +30,17 @@ jobs:
           node-version: '22'
           registry-url: https://npm.pkg.github.com
           scope: '@fme-api'
-
-      - name: Configure Maven for GitHub Packages
-        run: |
-          mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml <<EOF
-          <settings>
-            <servers>
-              <server>
-                <id>github</id>
-                <username>${{ github.actor }}</username>
-                <password>${{ secrets.GITHUB_TOKEN }}</password>
-              </server>
-            </servers>
-          </settings>
-          EOF
+          always-auth: true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Maven package (generate sources)
         run: mvn clean install -P generate-npm -P generate-java -DskipTests
 
+      - name: Publish .jar file
+        working-directory: .
+        run: |
+          mvn deploy -DskipTests
 
       - name: Get project version
         id: get-version
@@ -54,19 +48,9 @@ jobs:
           echo "VERSION=$(mvn help:evaluate \
             -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
-      - name: Publish .jar file
-        working-directory: .
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          mvn deploy -DskipTests
-
       - name: Publish npm packages
         working-directory: .
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cp .npmrc ./openapi-codegen/.npmrc
           echo "Looking for generated clients in openapi-codegen/…"
           for pkg in openapi-codegen/*/; do
           pkg_name=$(basename "${pkg%/}")
