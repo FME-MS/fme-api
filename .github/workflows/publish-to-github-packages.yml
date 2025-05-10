@@ -34,7 +34,7 @@ jobs:
           cache: 'maven'
 
       - name: Show settings.xml
-        run: cat $GITHUB_WORKSPACE/settings.xml
+        run: cat ~/.m2/settings.xml
 
       - name: Maven package (generate sources)
         run: mvn -B install -P generate-npm -P generate-java -DskipTests
