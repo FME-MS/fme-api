@@ -32,6 +32,10 @@ jobs:
           distribution: 'zulu'
           java-version: '21'
           cache: 'maven'
+          server-id: 'my-private-repo' # matches <id> in your pom.xml
+          server-username: '${{ github.actor }}'
+          server-password: '${{ secrets.GITHUB_TOKEN }}'
+
 
       - name: Show settings.xml
         run: cat ~/.m2/settings.xml
