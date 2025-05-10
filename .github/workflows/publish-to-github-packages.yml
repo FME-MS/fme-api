@@ -35,6 +35,7 @@ jobs:
           settings-path: ${{ github.workspace }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
       
       - name: Show settings.xml
         run: cat $GITHUB_WORKSPACE/settings.xml
