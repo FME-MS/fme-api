@@ -32,10 +32,7 @@ jobs:
           distribution: 'zulu'
           java-version: '21'
           cache: 'maven'
-          server-id: 'my-private-repo' # matches <id> in your pom.xml
-          server-username: '${{ github.actor }}'
-          server-password: '${{ secrets.GITHUB_TOKEN }}'
-
+          server-id: 'github'
 
       - name: Show settings.xml
         run: cat ~/.m2/settings.xml
@@ -45,6 +42,9 @@ jobs:
 
       - name: Publish .jar file
         working-directory: .
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mvn deploy -DskipTests
 
