@@ -1,14 +1,13 @@
-name: Generate & Publish TS Clients
+name: Generate and publish Java and TS
 
 permissions:
-  contents: read    # so your build steps can clone and read code
-  packages: write   # so you can publish to GitHub Packages
+  contents: read
+  packages: write
 
 on:
   push:
     branches:
       - develop
-      - main
 
 jobs:
   build-and-publish:
@@ -67,32 +66,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Looking for generated clients in openapi-codegen/…"
           cp .npmrc ./openapi-codegen/.npmrc
-          
+          echo "Looking for generated clients in openapi-codegen/…"
           for pkg in openapi-codegen/*/; do
           pkg_name=$(basename "${pkg%/}")
             if [ -f "$pkg/package.json" ]; then
               (
               cd "$pkg"
-          
               NAME=$(jq -r .name package.json)
-              VERSION=$(jq -r .version package.json)
               REPO=fme-api
               OWNER=${GITHUB_REPOSITORY_OWNER}
-              echo "   • Deleting existing snapshot versions of $OWNER for $NAME@$VERSION…"
-              echo "Calling route: /${OWNER}/${REPO}/pkgs/npm/${pkg_name}/versions"
-              gh api \
-                /${OWNER}/${REPO}/pkgs/npm/${pkg_name}/versions \
-                -q ".[] | select(.metadata.package_version==\"${VERSION}\") | .id" \
-                | while read id; do
-                    echo "     – deleting version id $id"
-                    echo "Calling route: /orgs/${OWNER}/packages/npm/${pkg}/${id}"
-                    gh api -X DELETE \
-                      /orgs/${OWNER}/packages/npm/${pkg}/versions/${id}
-                  done
-
-                echo "   • Publishing $NAME@$VERSION"
+              echo "   • Publishing $NAME@$VERSION"
               cd dist
               npm publish
               )
