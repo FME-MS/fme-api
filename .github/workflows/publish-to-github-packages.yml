@@ -52,7 +52,6 @@ jobs:
 
       - name: Publish npm packages
         run: |
-          cp .npmrc ./openapi-codegen/.npmrc
           echo "Looking for generated clients in openapi-codegen/…"
           for pkg in openapi-codegen/*/; do
           pkg_name=$(basename "${pkg%/}")
@@ -64,6 +63,8 @@ jobs:
               OWNER=${GITHUB_REPOSITORY_OWNER}
               echo "   • Publishing $NAME@$VERSION"
               cd dist
+              echo "@fme-ms:registry=https://npm.pkg.github.com" > .npmrc
+              echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
               npm publish
               )
             fi
