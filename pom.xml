@@ -519,7 +519,7 @@
                                 </goals>
                                 <configuration>
                                     <configOptions>
-                                        <npmName>@${npmScope/authentication</npmName>
+                                        <npmName>@${npmScope}/authentication</npmName>
                                         <npmVersion>${project.version}</npmVersion>
                                         <apiModulePrefix>authentication</apiModulePrefix>
                                     </configOptions>
