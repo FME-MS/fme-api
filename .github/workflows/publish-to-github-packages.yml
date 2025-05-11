@@ -19,12 +19,17 @@ jobs:
       - name: Set up Node.js 22
         uses: actions/setup-node@v3
         with:
+          always-auth: true
           node-version: '22'
           registry-url: https://npm.pkg.github.com
           scope: '@fme-api'
-          always-auth: true
+          cache: 'npm'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: .npmrc
+        run: cat ~/.npmrc
+
           
       - name: Set up JDK 21
         uses: actions/setup-java@v3
@@ -33,9 +38,6 @@ jobs:
           java-version: '21'
           cache: 'maven'
           server-id: 'github'
-
-      - name: Show settings.xml
-        run: cat ~/.m2/settings.xml
 
       - name: Maven package (generate sources)
         run: mvn -B install -P generate-npm -P generate-java -DskipTests
