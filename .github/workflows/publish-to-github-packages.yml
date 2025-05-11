@@ -27,8 +27,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: .npmrc
-        run: cat ~/.npmrc
-
+        run: cat .npmrc
           
       - name: Set up JDK 21
         uses: actions/setup-java@v3
