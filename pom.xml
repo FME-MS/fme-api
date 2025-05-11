@@ -32,6 +32,7 @@
         <java.lang.level>21</java.lang.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <api.base.package>${project.groupId}</api.base.package>
+        <npmScope>fme-ms</npmScope>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <openapi-generator-version>7.11.0</openapi-generator-version>
@@ -470,7 +471,7 @@
                                 </goals>
                                 <configuration>
                                     <configOptions>
-                                        <npmName>@${project.artifactId}/inventory</npmName>
+                                        <npmName>@${npmScope}/inventory</npmName>
                                         <npmVersion>${project.version}</npmVersion>
                                         <apiModulePrefix>inventory</apiModulePrefix>
                                     </configOptions>
@@ -486,7 +487,7 @@
                                 </goals>
                                 <configuration>
                                     <configOptions>
-                                        <npmName>@${project.artifactId}/groups</npmName>
+                                        <npmName>@${npmScope}/groups</npmName>
                                         <npmVersion>${project.version}</npmVersion>
                                         <apiModulePrefix>groups</apiModulePrefix>
                                     </configOptions>
@@ -502,7 +503,7 @@
                                 </goals>
                                 <configuration>
                                     <configOptions>
-                                        <npmName>@${project.artifactId}/users</npmName>
+                                        <npmName>@${npmScope}/users</npmName>
                                         <npmVersion>${project.version}</npmVersion>
                                         <apiModulePrefix>users</apiModulePrefix>
                                     </configOptions>
@@ -518,7 +519,7 @@
                                 </goals>
                                 <configuration>
                                     <configOptions>
-                                        <npmName>@${project.artifactId}/authentication</npmName>
+                                        <npmName>@${npmScope/authentication</npmName>
                                         <npmVersion>${project.version}</npmVersion>
                                         <apiModulePrefix>authentication</apiModulePrefix>
                                     </configOptions>
