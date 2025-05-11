@@ -57,6 +57,7 @@ jobs:
       - name: Publish npm packages
         working-directory: .
         run: |
+          cp .npmrc ./openapi-codegen/.npmrc
           echo "Looking for generated clients in openapi-codegen/…"
           for pkg in openapi-codegen/*/; do
           pkg_name=$(basename "${pkg%/}")
