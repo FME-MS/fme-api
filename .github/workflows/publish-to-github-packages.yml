@@ -24,15 +24,11 @@ jobs:
           cache: 'maven'
           server-id: 'github'
 
-      - name: Maven package (generate sources)
-        run: mvn -B install -P generate-npm -P generate-java -DskipTests
-
-      - name: Publish .jar file
+      - name: Maven package (generate sources) and deploy .jar
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          mvn deploy -DskipTests
+        run: mvn -B deploy -P generate-npm -P generate-java -DskipTests
 
       - name: Get project version
         id: get-version
