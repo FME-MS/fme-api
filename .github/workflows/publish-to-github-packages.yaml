@@ -8,6 +8,8 @@ on:
   push:
     branches:
       - develop
+  release:
+    types: [published]
 
 jobs:
   build-and-publish:
@@ -19,34 +21,16 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
-          distribution: temurin
+          distribution: 'zulu'
           java-version: '21'
+          cache: 'maven'
+          server-id: 'github'
 
-      - name: Set up Node.js 22
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-          registry-url: https://npm.pkg.github.com
-          scope: '@fme-api'
-
-      - name: Configure Maven for GitHub Packages
-        run: |
-          mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml <<EOF
-          <settings>
-            <servers>
-              <server>
-                <id>github</id>
-                <username>${{ github.actor }}</username>
-                <password>${{ secrets.GITHUB_TOKEN }}</password>
-              </server>
-            </servers>
-          </settings>
-          EOF
-
-      - name: Maven package (generate sources)
-        run: mvn clean install -P generate-npm -P generate-java -DskipTests
-
+      - name: Maven package (generate sources) and deploy .jar
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mvn -B deploy -P generate-npm -P generate-java -DskipTests
 
       - name: Get project version
         id: get-version
@@ -54,19 +38,18 @@ jobs:
           echo "VERSION=$(mvn help:evaluate \
             -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
-      - name: Publish .jar file
-        working-directory: .
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v3
+        with:
+          always-auth: true
+          node-version: '22'
+          registry-url: https://npm.pkg.github.com
+          scope: '@fme-ms'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          mvn deploy -DskipTests
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish npm packages
-        working-directory: .
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cp .npmrc ./openapi-codegen/.npmrc
           echo "Looking for generated clients in openapi-codegen/…"
           for pkg in openapi-codegen/*/; do
           pkg_name=$(basename "${pkg%/}")
@@ -78,6 +61,8 @@ jobs:
               OWNER=${GITHUB_REPOSITORY_OWNER}
               echo "   • Publishing $NAME@$VERSION"
               cd dist
+              echo "@fme-ms:registry=https://npm.pkg.github.com" > .npmrc
+              echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
               npm publish
               )
             fi
