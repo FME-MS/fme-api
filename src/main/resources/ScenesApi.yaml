@@ -1,0 +1,139 @@
+openapi: 3.1.0
+info:
+  title: ScenesApi
+  description: API zum verwalten von Musical-Szenen und Rollen
+  version: 1.0.0-SNAPSHOT
+servers:
+  - url: 'http://localhost:8080/api'
+paths:
+  /scenes:
+    get:
+      summary: Liste aller Szenen
+      tags: [Scenes]
+      responses:
+        '200':
+          description: Liste von Szenen
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SceneSummary'
+
+    post:
+      summary: Neue Szene aus Datei importieren
+      tags: [Scenes]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Szene erfolgreich erstellt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scene'
+        '400':
+          description: Fehler beim Import
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /scenes/{sceneId}:
+    get:
+      summary: Details einer Szene abrufen
+      tags: [Scenes]
+      parameters:
+        - in: path
+          name: sceneId
+          required: true
+          schema:
+            type: uuid
+      responses:
+        '200':
+          description: Szenendetails inkl. Rollen und Text
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scene'
+        '404':
+          description: Szene nicht gefunden
+
+    delete:
+      summary: Szene löschen
+      tags: [Scenes]
+      parameters:
+        - in: path
+          name: sceneId
+          required: true
+          schema:
+            type: uuid
+      responses:
+        '204':
+          description: Szene erfolgreich gelöscht
+        '404':
+          description: Szene nicht gefunden
+
+components:
+  schemas:
+    SceneSummary:
+      type: object
+      properties:
+        id:
+          type: uuid
+        title:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        version:
+          type: integer
+
+    Scene:
+      type: object
+      properties:
+        id:
+          type: uuid
+        title:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        roles:
+          type: array
+          items:
+            type: string
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/Line'
+
+    Line:
+      type: object
+      properties:
+        order:
+          type: integer
+        role:
+          type: string
+        text:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

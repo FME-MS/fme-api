@@ -184,17 +184,17 @@
                         <version>${openapi-generator-version}</version>
                         <executions>
                             <execution>
-                                <id>fme-inventory</id>
+                                <id>fme-scenes</id>
                                 <phase>process-resources</phase>
                                 <goals>
                                     <goal>generate</goal>
                                 </goals>
                                 <configuration>
-                                    <inputSpec>${project.build.directory}/schema/InventoryApi.yaml</inputSpec>
-                                    <output>${project.build.directory}/generated-sources/openapi-codegen/inventory</output>
-                                    <apiPackage>${api.base.package}.inventory.api</apiPackage>
-                                    <modelPackage>${api.base.package}.inventory.resource</modelPackage>
-                                    <invokerPackage>${api.base.package}.inventory.client</invokerPackage>
+                                    <inputSpec>${project.build.directory}/schema/ScenesApi.yaml</inputSpec>
+                                    <output>${project.build.directory}/generated-sources/openapi-codegen/scenes</output>
+                                    <apiPackage>${api.base.package}.scenes.api</apiPackage>
+                                    <modelPackage>${api.base.package}.scenes.resource</modelPackage>
+                                    <invokerPackage>${api.base.package}.scenes.client</invokerPackage>
                                     <generateApis>true</generateApis>
                                     <generateApiDocumentation>true</generateApiDocumentation>
                                     <addCompileSourceRoot>true</addCompileSourceRoot>
@@ -462,19 +462,19 @@
                         <version>${openapi-generator-version}</version>
                         <executions>
                             <execution>
-                                <id>inventory</id>
+                                <id>scenes</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>generate</goal>
                                 </goals>
                                 <configuration>
                                     <configOptions>
-                                        <npmName>@${npmScope}/inventory</npmName>
+                                        <npmName>@${npmScope}/scenes</npmName>
                                         <npmVersion>${project.version}</npmVersion>
-                                        <apiModulePrefix>inventory</apiModulePrefix>
+                                        <apiModulePrefix>scenes</apiModulePrefix>
                                     </configOptions>
-                                    <inputSpec>${project.basedir}/src/main/resources/InventoryApi.yaml</inputSpec>
-                                    <output>${project.basedir}/openapi-codegen/inventory</output>
+                                    <inputSpec>${project.basedir}/src/main/resources/ScenesApi.yaml</inputSpec>
+                                    <output>${project.basedir}/openapi-codegen/scenes</output>
                                 </configuration>
                             </execution>
                             <execution>
@@ -553,13 +553,13 @@
                                 </goals>
                             </execution>
                             <execution>
-                                <id>npm-install-inventory</id>
+                                <id>npm-install-scenes</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
                                 <phase>compile</phase>
                                 <configuration>
-                                    <workingDirectory>openapi-codegen/inventory</workingDirectory>
+                                    <workingDirectory>openapi-codegen/scenes</workingDirectory>
                                 </configuration>
                             </execution>
                             <execution>
@@ -597,14 +597,14 @@
 
 
                             <execution>
-                                <id>npm-build-inventory</id>
+                                <id>npm-build-scenes</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
                                 <phase>process-classes</phase>
                                 <configuration>
                                     <arguments>run build</arguments>
-                                    <workingDirectory>openapi-codegen/inventory</workingDirectory>
+                                    <workingDirectory>openapi-codegen/scenes</workingDirectory>
                                 </configuration>
                             </execution>
                             <execution>
