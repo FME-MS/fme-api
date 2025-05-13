@@ -8,6 +8,8 @@ on:
   push:
     branches:
       - develop
+  release:
+    types: [published]
 
 jobs:
   build-and-publish:
