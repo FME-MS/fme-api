@@ -33,7 +33,7 @@
         <npmScope>fme-ms</npmScope>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <openapi-generator-version>7.13.0</openapi-generator-version>
+        <openapi-generator-version>7.18.0</openapi-generator-version>
         <lombok-version>1.18.38</lombok-version>
         <swagger-annotations-version>2.2.31</swagger-annotations-version>
         <spring-hateoas-version>2.4.1</spring-hateoas-version>
